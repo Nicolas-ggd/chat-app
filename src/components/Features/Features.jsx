@@ -26,7 +26,7 @@ export const Features = () => {
         <div className="py-10 px-20 flex justify-center items-center">
             {featuresData && featuresData?.map((item, index) => {
                 return (
-                    <a key={index} href="#" className="block mx-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col justify-between h-[300px]">
+                    <div key={index} className="block mx-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col justify-between h-[300px]">
                         <div className="flex">
                             <button className="bg-gray-100 text-white font-bold py-4 px-4 rounded text-2xl">{item?.icon}</button>
                         </div>
@@ -36,7 +36,7 @@ export const Features = () => {
                                 <p className="font-normal text-gray-700 dark:text-gray-400">{item?.description}</p>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 );
             })}
         </div>
