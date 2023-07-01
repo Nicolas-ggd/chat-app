@@ -119,7 +119,7 @@ export const SignIn = ({ closeSignIn }) => {
 
                                 <p className="block mb-2 text-sm font-medium text-dark text-gray-900 dark:text-white">
                                     Don't have an account yet?{' '}
-                                    <a onClick={closeSignIn} className="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer outline-none">
+                                    <a onClick={closeSignIn} className="font-medium text-blue-600 hover:underline dark:text-primary-500 cursor-pointer outline-none">
                                         Sign up
                                     </a>
                                 </p>

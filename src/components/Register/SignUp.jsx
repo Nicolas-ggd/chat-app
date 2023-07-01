@@ -45,13 +45,13 @@ export const SignUp = ({ closeSignUp }) => {
     };
 
     return (
-        <section className="bg-grey-50">
+        <section className="bg-gray-50 dark:bg-gray-800">
             {!isSend && !isSuccessSend && <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white text-white">
                     <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />
                     Flowbite
                 </a>
-                <div className="w-full bg-white rounded-lg shadow dark:border md:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-800">
+                <div className="w-full bg-white rounded-lg shadow dark:border md:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8 dark:bg-gray-600 text-white">
                         <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-white text-gray-900">
                             Create and account
@@ -78,7 +78,7 @@ export const SignUp = ({ closeSignUp }) => {
                             {isError && signUpData?.name?.length <= 0 && <span style={{ color: "red", margin: "3px" }}>Please fill the name</span>}
 
                             <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-white text-gray-900">Your email</label>
+                                <label htmlFor="email" className="block mb-2 text-sm font-medium dark:text-white text-gray-900">Your email</label>
                                 <input
                                     style={{ borderColor: isError && signUpData?.email?.length === 0 ? 'red' : '' }}
                                     type="email"
@@ -98,7 +98,7 @@ export const SignUp = ({ closeSignUp }) => {
                             {isError && signUpData?.email?.length <= 0 && <span style={{ color: "red", margin: "3px" }}>Please fill the email</span>}
 
                             <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-white text-gray-900">Password</label>
+                                <label htmlFor="password" className="block mb-2 text-sm font-medium dark:text-white text-gray-900">Password</label>
                                 <input
                                     style={{ borderColor: isError && signUpData?.password?.length === 0 ? 'red' : '' }}
                                     type="password"
@@ -118,7 +118,7 @@ export const SignUp = ({ closeSignUp }) => {
                             {isError && signUpData?.password?.length === 0 && <span style={{ color: "red", margin: "3px" }}>Please fill in the password</span>}
 
                             <div className="relative">
-                                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-white text-gray-900">Confirm password</label>
+                                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium dark:text-white text-gray-900">Confirm password</label>
                                 <input
                                     style={{ borderColor: isError && signUpData?.confirmPassword !== signUpData?.password || isError && signUpData?.confirmPassword?.length === 0 ? 'red' : signUpData?.confirmPassword === signUpData?.password && signUpData?.confirmPassword ? 'green' : '' }}
                                     type="password"
@@ -154,14 +154,14 @@ export const SignUp = ({ closeSignUp }) => {
                                     />
                                 </div>
                                 <div className="ml-3 text-sm">
-                                    <label htmlFor="terms" className="block mb-2 text-sm font-medium text-white text-gray-900">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
+                                    <label htmlFor="terms" className="block mb-2 text-sm font-medium dark:text-white text-gray-900">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
                                 </div>
                             </div>
                             {isError && isChecked === false && <span style={{ color: "red", margin: "5px" }}>You need to accept Terms and Conditions</span>}
                             <button onClick={submitSignUpData} type="button" className="w-full text-white transition delay-50 border-none bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
 
-                            <p className="block mb-2 text-sm font-medium text-white text-gray-900">
-                                Already have an account? <a onClick={closeSignUp} className="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer">Sign in here</a>
+                            <p className="block mb-2 text-sm font-medium dark:text-white text-gray-900">
+                                Already have an account? <a onClick={closeSignUp} className="font-medium text-blue-600 hover:underline dark:text-primary-500 cursor-pointer">Sign in here</a>
                             </p>
 
                         </form>
