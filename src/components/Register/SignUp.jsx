@@ -158,7 +158,7 @@ export const SignUp = ({ closeSignUp }) => {
                                 </div>
                             </div>
                             {isError && isChecked === false && <span style={{ color: "red", margin: "5px" }}>You need to accept Terms and Conditions</span>}
-                            <button onClick={submitSignUpData} type="button" className="w-full text-white transition delay-50 border-none bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+                            <button onClick={submitSignUpData} type="button" className="w-full text-white transition duration-500 border-none bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
 
                             <p className="block mb-2 text-sm font-medium dark:text-white text-gray-900">
                                 Already have an account? <a onClick={closeSignUp} className="font-medium text-blue-600 hover:underline dark:text-primary-500 cursor-pointer">Sign in here</a>

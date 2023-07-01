@@ -77,7 +77,7 @@ export const SignIn = ({ closeSignIn }) => {
                                         }}
                                     />
                                 </div>
-                                {isError && signInData?.email?.length <= 0 && <span style={{ color: 'red', margin: '3px' }}>Please fill the email</span>}
+                                {isError && signInData?.email?.length <= 0 && <span className="transition duration-500" style={{ color: 'red', margin: '3px' }}>Please fill the email</span>}
 
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium dark:text-white text-gray-900">Password</label>
@@ -97,7 +97,7 @@ export const SignIn = ({ closeSignIn }) => {
                                         }}
                                     />
                                 </div>
-                                {isError && signInData?.password?.length === 0 && <span style={{ color: 'red', margin: '3px' }}>Please fill the password</span>}
+                                {isError && signInData?.password?.length === 0 && <span className="transition duration-500" style={{ color: 'red', margin: '3px' }}>Please fill the password</span>}
 
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-start">
@@ -113,7 +113,7 @@ export const SignIn = ({ closeSignIn }) => {
                                     </Link>
                                 </div>
 
-                                <button onClick={submitSignInData} type="button" className="w-full transition delay-50 border-none text-white bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 outline-none">
+                                <button onClick={submitSignInData} type="button" className="w-full transition duration-500 border-none text-white bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 outline-none">
                                     Sign in
                                 </button>
 
