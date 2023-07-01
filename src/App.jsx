@@ -11,8 +11,8 @@ function App() {
     <Router>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route exact path="/" element={<Landing />} />
         </Route>
+        <Route exact path="/" element={<Landing />} />
         <Route exact path="/signin" element={<Auth />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
