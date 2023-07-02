@@ -1,9 +1,9 @@
 
 export const Chat = () => {
     return (
-        <div className="flex h-screen antialiased text-gray-800">
+        <div className="flex h-screen antialiased text-gray-800 dark:bg-gray-900 transition duration-3s">
             <div className="flex flex-row h-full w-full overflow-x-hidden">
-                <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
+                <div className="flex dark:bg-gray-800 transition duration-3s rounded-2xl flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
                     <div className="flex flex-row items-center justify-center h-12 w-full">
                         <div
                             className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10"
@@ -23,7 +23,7 @@ export const Chat = () => {
                                 ></path>
                             </svg>
                         </div>
-                        <div className="ml-2 font-bold text-2xl">QuickChat</div>
+                        <div className="ml-2 font-bold dark:text-white text-2xl">QuickChat</div>
                     </div>
                     <div
                         className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
@@ -48,71 +48,25 @@ export const Chat = () => {
                     </div>
                     <div className="flex flex-col mt-8">
                         <div className="flex flex-row items-center justify-between text-xs">
-                            <span className="font-bold">Active Conversations</span>
+                            <span className="font-bold dark:text-white">Active Conversations</span>
                             <span
                                 className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
                             >4</span
                             >
                         </div>
-                        <div className="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-                            <button
-                                className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                            >
-                                <div
-                                    className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
-                                >
+                        <div className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
+                            <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
+                                <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                                     H
                                 </div>
-                                <div className="ml-2 text-sm font-semibold">Henry Boyd</div>
-                            </button>
-                            <button
-                                className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                            >
-                                <div
-                                    className="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
-                                >
-                                    M
+                                <div className="ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
+                                    Henry Boyd
                                 </div>
-                                <div className="ml-2 text-sm font-semibold">Marta Curtis</div>
-                                <div
-                                    className="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
-                                >
-                                    2
-                                </div>
-                            </button>
-                            <button
-                                className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                            >
-                                <div
-                                    className="flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full"
-                                >
-                                    P
-                                </div>
-                                <div className="ml-2 text-sm font-semibold">Philip Tucker</div>
-                            </button>
-                            <button
-                                className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                            >
-                                <div
-                                    className="flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full"
-                                >
-                                    C
-                                </div>
-                                <div className="ml-2 text-sm font-semibold">Christine Reid</div>
-                            </button>
-                            <button
-                                className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                            >
-                                <div
-                                    className="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
-                                >
-                                    J
-                                </div>
-                                <div className="ml-2 text-sm font-semibold">Jerry Guzman</div>
                             </button>
                         </div>
+
                         <div className="flex flex-row items-center justify-between text-xs mt-6">
-                            <span className="font-bold">Archivied</span>
+                            <span className="font-bold dark:text-white">Archivied</span>
                             <span
                                 className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
                             >7</span
@@ -127,14 +81,14 @@ export const Chat = () => {
                                 >
                                     H
                                 </div>
-                                <div className="ml-2 text-sm font-semibold">Henry Boyd</div>
+                                <div className="ml-2 text-sm font-semibold dark:text-white">Henry Boyd</div>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col flex-auto h-full p-6">
                     <div
-                        className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
+                        className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s"
                     >
                         <div className="flex flex-col h-full overflow-x-auto mb-4">
                             <div className="flex flex-col h-full">
@@ -147,9 +101,9 @@ export const Chat = () => {
                                                 A
                                             </div>
                                             <div
-                                                className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                className="relative ml-3 text-sm dark:bg-gray-700 bg-white py-2 px-4 shadow rounded-xl"
                                             >
-                                                <div>Hey How are you today?</div>
+                                                <div className="dark:text-white">Hey How are you today?</div>
                                             </div>
                                         </div>
                                     </div>
@@ -329,7 +283,7 @@ export const Chat = () => {
                             </div>
                         </div>
                         <div
-                            className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
+                            className="flex dark:bg-gray-700 flex-row items-center h-16 rounded-xl bg-white w-full px-4"
                         >
                             <div>
                                 <button
@@ -355,7 +309,7 @@ export const Chat = () => {
                                 <div className="relative w-full">
                                     <input
                                         type="text"
-                                        className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                                        className="flex w-full dark:bg-gray-700 dark:border-gray-500 border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                                     />
                                     <button
                                         className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
