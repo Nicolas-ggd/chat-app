@@ -23,12 +23,12 @@ export const Features = () => {
     ];
 
     return (
-        <div className="py-10 px-20 flex justify-center items-center">
+        <div className="py-10 px-20 flex justify-center items-center dark:bg-gray-900 ">
             {featuresData && featuresData?.map((item, index) => {
                 return (
                     <div key={index} className="block mx-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex flex-col justify-between h-[300px]">
                         <div className="flex">
-                            <button className="bg-gray-100 text-white font-bold py-4 px-4 rounded text-2xl">{item?.icon}</button>
+                            <button className="bg-gray-100 dark:bg-gray-700 text-white font-bold py-4 px-4 rounded text-2xl">{item?.icon}</button>
                         </div>
                         <div className="flex flex-col justify-between h-full">
                             <div>
