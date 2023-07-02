@@ -5,11 +5,13 @@ import { Page404 } from "./components/404Page/404";
 import { Landing } from "./components/LandingPage/Landing";
 import { PrivateRoutes } from "./utils/PrivateRoutes";
 import { Chat } from "./components/Chat/Chat";
+import { Header } from "./components/Header/Header";
 
 function App() {
 
   return (
     <Router>
+      <Header />
       <Routes>
         <Route element={<PrivateRoutes />}>
         </Route>
