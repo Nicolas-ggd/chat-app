@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export const ChatBox = () => {
+  const [isMessage, setIsMessage] = useState('');
+
   return (
     <div className="flex flex-col flex-auto h-full p-6">
       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
@@ -184,6 +188,7 @@ export const ChatBox = () => {
               <input
                 type="text"
                 className="flex w-full dark:text-white dark:bg-gray-700 dark:border-gray-500 border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                onChange={(e) => setIsMessage(e.target.value)}
               />
               <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
                 <svg

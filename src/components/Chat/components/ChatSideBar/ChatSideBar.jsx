@@ -1,4 +1,21 @@
+import { useState } from "react";
+import axios from "axios";
+
 export const ChatSideBar = () => {
+  const [isSearch, setIsSearch] = useState("");
+  const [isResult, setIsResult] = useState(null);
+
+  const searchUser = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .get(`http://localhost:8000/user/search-user?query=${isSearch}`)
+      .then((res) => {
+        const data = res.data;
+        setIsResult(data);
+      });
+  };
+
   return (
     <div className="flex px-5 dark:bg-gray-800 transition duration-3s rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
       <div className="flex flex-row items-center justify-center h-12 w-full">
@@ -37,12 +54,11 @@ export const ChatSideBar = () => {
           <div className="leading-none ml-1 text-xs">Active</div>
         </div>
       </div>
-
-      <form className="flex items-center py-4">
-        <label htmlFor="simple-search" className="sr-only">
-          Search
-        </label>
-        <div className="relative w-full">
+      <label htmlFor="simple-search" className="sr-only">
+        Search
+      </label>
+      <form onKeyUp={searchUser}>
+        <div className="relative w-full py-4">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
               aria-hidden="true"
@@ -64,10 +80,37 @@ export const ChatSideBar = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
             placeholder="Search frends"
             required
+            onChange={(e) => setIsSearch(e.target.value)}
           />
         </div>
       </form>
-
+      {isSearch.length > 0 && (
+        <div>
+          {isResult.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
+            >
+              <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
+                <div className="relative">
+                  <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                    H
+                  </div>
+                  {item?.online && (
+                    <div className="absolute top-0 right-0">
+                      <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                    </div>
+                  )}
+                </div>
+                <div className="ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
+                  {item?.name}
+                </div>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      
       <div className="flex flex-col mt-8">
         <div className="flex flex-row items-center justify-between text-xs">
           <span className="font-bold dark:text-white">
