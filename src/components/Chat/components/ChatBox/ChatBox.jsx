@@ -1,7 +1,15 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { socket } from "../../../../api/socket";
 
 export const ChatBox = () => {
-  const [isMessage, setIsMessage] = useState('');
+  const [isMessage, setIsMessage] = useState("");
+  const { id } = useParams();
+
+  const sendMessage = () => {
+    socket.emit("message", isMessage);
+  };
 
   return (
     <div className="flex flex-col flex-auto h-full p-6">
@@ -184,32 +192,37 @@ export const ChatBox = () => {
             </button>
           </div>
           <div className="flex-grow ml-4">
-            <div className="relative w-full">
-              <input
-                type="text"
-                className="flex w-full dark:text-white dark:bg-gray-700 dark:border-gray-500 border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-                onChange={(e) => setIsMessage(e.target.value)}
-              />
-              <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+            <form onSubmit={sendMessage}>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  className="flex w-full dark:text-white dark:bg-gray-700 dark:border-gray-500 border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                  onChange={(e) => setIsMessage(e.target.value)}
+                />
+                <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </form>
           </div>
           <div className="ml-4">
-            <button className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+            <button
+              onClick={sendMessage}
+              className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+            >
               <span>Send</span>
               <span className="ml-2">
                 <svg

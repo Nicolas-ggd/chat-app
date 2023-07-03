@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { socket } from "../../../../api/socket";
+import { Link } from "react-router-dom";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
@@ -14,6 +16,11 @@ export const ChatSideBar = () => {
         const data = res.data;
         setIsResult(data);
       });
+  };
+
+  const joinToChat = (item) => {
+    let roomName = "movadaavikvan";
+    socket.emit('joinRoom', roomName)
   };
 
   return (
@@ -86,31 +93,35 @@ export const ChatSideBar = () => {
       </form>
       {isSearch.length > 0 && (
         <div>
-          {isResult.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
-            >
-              <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
-                <div className="relative">
-                  <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                    H
-                  </div>
-                  {item?.online && (
-                    <div className="absolute top-0 right-0">
-                      <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+          {isResult &&
+            isResult.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
+              >
+                <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
+                  <div className="relative">
+                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                      H
                     </div>
-                  )}
-                </div>
-                <div className="ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
-                  {item?.name}
-                </div>
-              </button>
-            </div>
-          ))}
+                    {item?.online && (
+                      <div className="absolute top-0 right-0">
+                        <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
+                    {item?.name}
+                  </div>
+                  <Link to={`/chat/${item._id}`} onClick={(e) => joinToChat(item)} className="ml-2 bg-indigo-200 rounded-full pr-2 pl-2 flex items-center">
+                    Join
+                  </Link>
+                </button>
+              </div>
+            ))}
         </div>
       )}
-      
+    
       <div className="flex flex-col mt-8">
         <div className="flex flex-row items-center justify-between text-xs">
           <span className="font-bold dark:text-white">
@@ -121,11 +132,11 @@ export const ChatSideBar = () => {
           </span>
         </div>
         <div className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
-          <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
+          <button className="flex flex-row text-sm font-semibold transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
             <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
               H
             </div>
-            <div className="ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
+            <div className="ml-2 dark-hover dark:text-white z-50 text-sm font-semibold">
               Henry Boyd
             </div>
           </button>
