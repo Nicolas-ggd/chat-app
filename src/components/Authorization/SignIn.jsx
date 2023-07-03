@@ -36,7 +36,7 @@ export const SignIn = ({ closeSignIn }) => {
                 localStorage.setItem('access_token', data?.access_token);
                 localStorage.setItem('userId', data?._id);
                 console.log(data)
-                navigate('/home');
+                navigate('/chat');
             })
             .catch((res) => {
                 const error = res?.response?.data?.message;
