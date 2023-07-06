@@ -49,17 +49,17 @@ export const ChatBox = () => {
 
       getConversation();
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
-      setSelectedConversation((prevConversation) => {
-        const updatedConversation = [...prevConversation, data];
-
-        return updatedConversation;
-      });
+      setSelectedConversation((prevData) => [...prevData, data]);
     });
-  }, [sendMessage]);
+  
+    return () => {
+      socket.off("private-message-received");
+    };
+  }, []);
 
   return (
     <>
@@ -70,14 +70,14 @@ export const ChatBox = () => {
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {selectedConversation &&
-                    selectedConversation?.map((item) => {
+                    selectedConversation?.map((item, index) => {
                       const message = item?.message[0];
                       const senderId = message?.sender?._id;
                       const isCurrentUser = userId === senderId;
 
                       return (
                         <div
-                          key={message?._id}
+                          key={index}
                           className={`${isCurrentUser ? 'col-start-1 col-end-8 p-3 py-1 rounded-lg' : 'col-start-6 col-end-13 p-3 py-1 rounded-lg' }`}
                         >
                           <div className={`${isCurrentUser ? 'flex flex-row items-center' : 'flex items-center flex-row-reverse'}`}>
