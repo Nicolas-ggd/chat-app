@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { socket } from "../../../../api/socket";
 import { Link } from "react-router-dom";
 
 export const ChatSideBar = () => {
@@ -16,11 +15,6 @@ export const ChatSideBar = () => {
         const data = res.data;
         setIsResult(data);
       });
-  };
-
-  const joinToChat = (item) => {
-    let roomName = "movadaavikvan";
-    socket.emit('joinRoom', roomName)
   };
 
   return (
@@ -99,7 +93,11 @@ export const ChatSideBar = () => {
                 key={index}
                 className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
               >
-                <button className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
+                <Link
+                  to={`/chat/${item._id}`}
+                  onClick={() => indicateUser(item)}
+                  className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
+                >
                   <div className="relative">
                     <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                       H
@@ -113,35 +111,16 @@ export const ChatSideBar = () => {
                   <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
                     {item?.name}
                   </div>
-                  <Link to={`/chat/${item._id}`} onClick={(e) => joinToChat(item)} className="ml-2 bg-indigo-200 rounded-full pr-2 pl-2 flex items-center">
+                  {/* <Link  onClick={(e) => joinToChat(item)} className="ml-2 bg-indigo-200 rounded-full pr-2 pl-2 flex items-center">
                     Join
-                  </Link>
-                </button>
+                  </Link> */}
+                </Link>
               </div>
             ))}
         </div>
       )}
-    
-      <div className="flex flex-col mt-8">
-        <div className="flex flex-row items-center justify-between text-xs">
-          <span className="font-bold dark:text-white">
-            Active Conversations
-          </span>
-          <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
-            4
-          </span>
-        </div>
-        <div className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
-          <button className="flex flex-row text-sm font-semibold transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2">
-            <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-              H
-            </div>
-            <div className="ml-2 dark-hover dark:text-white z-50 text-sm font-semibold">
-              Henry Boyd
-            </div>
-          </button>
-        </div>
 
+      <div className="flex flex-col mt-8">
         <div className="flex flex-row items-center justify-between text-xs mt-6">
           <span className="font-bold dark:text-white">Archivied</span>
           <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
