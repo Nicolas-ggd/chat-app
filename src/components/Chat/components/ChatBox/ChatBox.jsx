@@ -31,6 +31,7 @@ export const ChatBox = () => {
         })
         .then((res) => {
           const data = res.data;
+          console.log(data)
           socket.emit("private-message", data);
         });
     }
@@ -55,7 +56,7 @@ export const ChatBox = () => {
     socket.on("private-message-received", (data) => {
       setSelectedConversation((prevData) => [...prevData, data]);
     });
-  
+
     return () => {
       socket.off("private-message-received");
     };
@@ -70,7 +71,7 @@ export const ChatBox = () => {
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {selectedConversation &&
-                    selectedConversation?.map((item, index) => {
+                    selectedConversation.map((item, index) => {
                       const message = item?.message[0];
                       const senderId = message?.sender?._id;
                       const isCurrentUser = userId === senderId;
@@ -78,13 +79,27 @@ export const ChatBox = () => {
                       return (
                         <div
                           key={index}
-                          className={`${isCurrentUser ? 'col-start-1 col-end-8 p-3 py-1 rounded-lg' : 'col-start-6 col-end-13 p-3 py-1 rounded-lg' }`}
+                          className={`${
+                            isCurrentUser
+                              ? "col-start-6 col-end-13 p-3 py-1 rounded-lg"
+                              : "col-start-1 col-end-8 p-3 py-1 rounded-lg "
+                          }`}
                         >
-                          <div className={`${isCurrentUser ? 'flex flex-row items-center' : 'flex items-center flex-row-reverse'}`}>
+                          <div
+                            className={`${
+                              isCurrentUser
+                                ? "flex items-center flex-row-reverse"
+                                : "flex flex-row items-center"
+                            }`}
+                          >
                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                               A
                             </div>
-                            <div className={`relative ${isCurrentUser ? 'ml-3' : 'mr-3'} text-sm dark:bg-gray-700 bg-white py-2 px-4 shadow rounded-xl`}>
+                            <div
+                              className={`relative ${
+                                isCurrentUser ? "mr-3" : "ml-3"
+                              } text-sm dark:bg-gray-700 bg-white py-2 px-4 shadow rounded-xl`}
+                            >
                               <div className={`dark:text-white`}>
                                 {message?.content}
                               </div>
@@ -116,7 +131,7 @@ export const ChatBox = () => {
                 </button>
               </div>
               <div className="flex-grow ml-4">
-                <form onSubmit={(e) => sendMessage(e)}>
+                <form onSubmit={sendMessage}>
                   <div className="relative w-full">
                     <input
                       placeholder="Type message..."
