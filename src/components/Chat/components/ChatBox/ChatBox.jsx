@@ -43,7 +43,6 @@ export const ChatBox = () => {
           .get(`http://localhost:8000/chat/get-conversation?query=${id}`)
           .then((res) => {
             const data = res.data;
-            // setIsMessage(data)
             setSelectedConversation(data);
           });
       };
@@ -75,8 +74,7 @@ export const ChatBox = () => {
                       const message = item?.message[0];
                       const senderId = item?.message[0]?.sender?._id ? item?.message[0]?.sender?._id : item?.message[0]?.sender;
                       const isCurrentUser = userId === senderId;
-                      // console.log(isSender, 'senderId')
-                      // console.log(item, 'item')
+                      
                       return (
                         <div
                           key={index}

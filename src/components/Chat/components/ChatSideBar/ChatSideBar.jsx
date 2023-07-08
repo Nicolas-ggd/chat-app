@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState([]);
 
   const searchUser = async (e) => {
     e.preventDefault();
@@ -13,8 +14,13 @@ export const ChatSideBar = () => {
       .get(`http://localhost:8000/user/search-user?query=${isSearch}`)
       .then((res) => {
         const data = res.data;
+        console.log(data?._id, "id sl");
         setIsResult(data);
       });
+  };
+
+  const handleSelectConversation = (conversation) => {
+    setSelectedConversation((prevSelected) => [...prevSelected, conversation]);
   };
 
   return (
@@ -95,7 +101,7 @@ export const ChatSideBar = () => {
               >
                 <Link
                   to={`/chat/${item._id}`}
-                  onClick={() => indicateUser(item)}
+                  onClick={() => handleSelectConversation(item)}
                   className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
                 >
                   <div className="relative">
@@ -111,9 +117,6 @@ export const ChatSideBar = () => {
                   <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
                     {item?.name}
                   </div>
-                  {/* <Link  onClick={(e) => joinToChat(item)} className="ml-2 bg-indigo-200 rounded-full pr-2 pl-2 flex items-center">
-                    Join
-                  </Link> */}
                 </Link>
               </div>
             ))}
@@ -122,21 +125,27 @@ export const ChatSideBar = () => {
 
       <div className="flex flex-col mt-8">
         <div className="flex flex-row items-center justify-between text-xs mt-6">
-          <span className="font-bold dark:text-white">Archivied</span>
+          <span className="font-bold dark:text-white">Conversations</span>
           <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
-            7
+            {selectedConversation?.length}
           </span>
         </div>
-        <div className="flex flex-col space-y-1 mt-4 -mx-2">
-          <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-            <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-              H
-            </div>
-            <div className="ml-2 text-sm font-semibold dark:text-white">
-              Henry Boyd
-            </div>
-          </button>
-        </div>
+        {selectedConversation && selectedConversation.length > 0 && (
+          <div>
+            {selectedConversation.map((conversation, index) => (
+              <div key={index} className="flex flex-col space-y-1 mt-4 -mx-2">
+                <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                  <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                    {conversation.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="ml-2 text-sm font-semibold dark:text-white">
+                    {conversation.name}
+                  </div>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
