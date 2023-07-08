@@ -14,7 +14,6 @@ export const ChatSideBar = () => {
       .get(`http://localhost:8000/user/search-user?query=${isSearch}`)
       .then((res) => {
         const data = res.data;
-        console.log(data?._id, "id sl");
         setIsResult(data);
       });
   };
@@ -133,16 +132,21 @@ export const ChatSideBar = () => {
         {selectedConversation && selectedConversation.length > 0 && (
           <div>
             {selectedConversation.map((conversation, index) => (
-              <div key={index} className="flex flex-col space-y-1 mt-4 -mx-2">
-                <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-                  <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                    {conversation.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="ml-2 text-sm font-semibold dark:text-white">
-                    {conversation.name}
-                  </div>
-                </button>
-              </div>
+              <Link
+                to={`/chat/${conversation._id}`}
+                key={index}
+              >
+                <div className="flex flex-col space-y-1 mt-4 -mx-2">
+                  <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                      {conversation.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="ml-2 text-sm font-semibold dark:text-white">
+                      {conversation.name}
+                    </div>
+                  </button>
+                </div>
+              </Link>
             ))}
           </div>
         )}

@@ -53,6 +53,7 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
+      console.log(data)
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 
@@ -92,7 +93,7 @@ export const ChatBox = () => {
                             }`}
                           >
                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              A
+                              {isCurrentUser ? message?.sender?.name?.charAt(0)?.toUpperCase() : message?.recipient?.name?.charAt(0)?.toUpperCase()}
                             </div>
                             <div
                               className={`relative ${
