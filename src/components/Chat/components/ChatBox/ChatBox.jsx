@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import { socket } from "../../../../api/socket";
+import CheckIcon from '@mui/icons-material/Check';
 
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [isRecipient, setIsRecipient] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
 
@@ -53,7 +55,7 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
-      console.log(data)
+      console.log(data);
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 
@@ -62,20 +64,55 @@ export const ChatBox = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const getOneUser = async () => {
+      await axios
+        .get(`http://localhost:8000/user/get-user?query=${id}`)
+        .then((res) => {
+          const data = res.data;
+          setIsRecipient(data);
+        });
+    };
+
+    getOneUser();
+  }, []);
+
   return (
     <>
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
           <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
+            {isRecipient && (
+              <>
+                <div className="flex items-center">
+                  <div className="relative">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                      {isRecipient &&
+                        isRecipient?.name?.charAt(0)?.toUpperCase()}
+                    </div>
+                    {isRecipient?.online && (
+                      <div className="absolute top-0 right-0">
+                        <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-dark dark:bg-red dark:text-white p-4">
+                    {isRecipient?.name}
+                  </div>
+                </div>
+              </>
+            )}
             <div className="flex flex-col h-full overflow-x-auto mb-4">
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {selectedConversation &&
                     selectedConversation.map((item, index) => {
                       const message = item?.message[0];
-                      const senderId = item?.message[0]?.sender?._id ? item?.message[0]?.sender?._id : item?.message[0]?.sender;
+                      const senderId = item?.message[0]?.sender?._id
+                        ? item?.message[0]?.sender?._id
+                        : item?.message[0]?.sender;
                       const isCurrentUser = userId === senderId;
-                      
+
                       return (
                         <div
                           key={index}
@@ -93,16 +130,25 @@ export const ChatBox = () => {
                             }`}
                           >
                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              {isCurrentUser ? message?.sender?.name?.charAt(0)?.toUpperCase() : message?.recipient?.name?.charAt(0)?.toUpperCase()}
+                              {isCurrentUser
+                                ? message?.sender?.name
+                                    ?.charAt(0)
+                                    ?.toUpperCase()
+                                : message?.recipient?.name
+                                    ?.charAt(0)
+                                    ?.toUpperCase()}
                             </div>
                             <div
                               className={`relative ${
                                 isCurrentUser ? "mr-3" : "ml-3"
-                              } text-sm dark:bg-gray-700 bg-white py-2 px-4 shadow rounded-xl`}
+                              } text-sm dark:bg-gray-700 bg-white flex py-2 px-4 shadow rounded-xl`}
                             >
                               <div className={`dark:text-white`}>
                                 {message?.content}
                               </div>
+                              <p className="px-1 mt-1 text-dark dark:text-white text-xs">17:55
+                              <CheckIcon style={{ fontSize: "15px", marginLeft: "5px" }} />
+                              </p>
                             </div>
                           </div>
                         </div>

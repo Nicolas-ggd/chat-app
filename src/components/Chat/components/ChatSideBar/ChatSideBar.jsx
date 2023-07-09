@@ -6,17 +6,29 @@ export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState([]);
+  const [isError, setIsError] = useState(null);
 
   const searchUser = async (e) => {
     e.preventDefault();
-
-    await axios
-      .get(`http://localhost:8000/user/search-user?query=${isSearch}`)
-      .then((res) => {
-        const data = res.data;
-        setIsResult(data);
-      });
+  
+    const searchQuery = isSearch.trim();
+  
+    if (searchQuery.length === 0) {
+      setIsResult([]);
+      return;
+    }
+  
+    try {
+      const response = await axios.get(`http://localhost:8000/user/search-user?query=${searchQuery}`);
+      const data = response.data;
+  
+      setIsResult(data.length > 0 ? data : []);
+    } catch (error) {
+      const data = error?.response?.data?.message;
+      setIsError(data);
+    }
   };
+  
 
   const handleSelectConversation = (conversation) => {
     setSelectedConversation((prevSelected) => [...prevSelected, conversation]);
@@ -43,23 +55,7 @@ export const ChatSideBar = () => {
         </div>
         <div className="ml-2 font-bold dark:text-white text-2xl">QuickChat</div>
       </div>
-      <div className="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
-        <div className="h-20 w-20 rounded-full border overflow-hidden">
-          <img
-            src="https://avatars3.githubusercontent.com/u/2763884?s=128"
-            alt="Avatar"
-            className="h-full w-full"
-          />
-        </div>
-        <div className="text-sm font-semibold mt-2">Aminos Co.</div>
-        <div className="text-xs text-gray-500">Lead UI/UX Designer</div>
-        <div className="flex flex-row items-center mt-3">
-          <div className="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full">
-            <div className="h-3 w-3 bg-white rounded-full self-end mr-1"></div>
-          </div>
-          <div className="leading-none ml-1 text-xs">Active</div>
-        </div>
-      </div>
+      
       <label htmlFor="simple-search" className="sr-only">
         Search
       </label>
@@ -84,7 +80,7 @@ export const ChatSideBar = () => {
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
-            placeholder="Search frends"
+            placeholder="Search conversation..."
             required
             onChange={(e) => setIsSearch(e.target.value)}
           />
@@ -96,7 +92,7 @@ export const ChatSideBar = () => {
             isResult.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
+                className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
               >
                 <Link
                   to={`/chat/${item._id}`}
@@ -121,21 +117,24 @@ export const ChatSideBar = () => {
             ))}
         </div>
       )}
+      {console.log(isResult?.length)}
+      {isSearch?.length > 0 && isError && (
+        <div className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
+          <p className="pl-3 text-dark dark:text-white">{isError}</p>
+        </div>
+      )}
 
-      <div className="flex flex-col mt-8">
+      <div className="flex flex-col mt-2">
         <div className="flex flex-row items-center justify-between text-xs mt-6">
           <span className="font-bold dark:text-white">Conversations</span>
-          <span className="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
+          <span className="flex items-center font-bold justify-center bg-gray-300 h-4 w-4 rounded-full">
             {selectedConversation?.length}
           </span>
         </div>
         {selectedConversation && selectedConversation.length > 0 && (
           <div>
             {selectedConversation.map((conversation, index) => (
-              <Link
-                to={`/chat/${conversation._id}`}
-                key={index}
-              >
+              <Link to={`/chat/${conversation._id}`} key={index}>
                 <div className="flex flex-col space-y-1 mt-4 -mx-2">
                   <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
                     <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
