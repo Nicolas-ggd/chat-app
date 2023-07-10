@@ -84,7 +84,7 @@ export const ChatBox = () => {
   useEffect(() => {
     const getOneUser = async () => {
       await axios
-        .get(`http://localhost:8000/user/get-user?query=${id}`)
+        .get(`http://localhost:8000/user/get-user?query=${userId}`)
         .then((res) => {
           const data = res.data;
           setIsRecipient(data);
@@ -92,6 +92,10 @@ export const ChatBox = () => {
     };
 
     getOneUser();
+
+    socket.on("connectedUsers", (data) => {
+      console.log(data, 'connectedUsers')
+    });
   }, []);
 
   return (
@@ -271,7 +275,7 @@ export const ChatBox = () => {
             <div className="flex flex-col h-full overflow-x-auto mb-4">
               <div className="flex flex-col h-full">
                 <div className="flex grid-cols-12 gap-y-2 justify-center items-center h-full">
-                  <h1 className="flex font-semibold text-white">
+                  <h1 className="flex font-semibold text-dark dark:text-white">
                     Select chat to start conversation...
                   </h1>
                 </div>

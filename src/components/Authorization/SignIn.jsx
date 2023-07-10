@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
+import { socket } from "../../api/socket";
+
 export const SignIn = ({ closeSignIn }) => {
     const navigate = useNavigate();
     const [isError, setIsError] = useState(false);
@@ -35,6 +37,11 @@ export const SignIn = ({ closeSignIn }) => {
                 const data = res.data;
                 localStorage.setItem('access_token', data?.access_token);
                 localStorage.setItem('userId', data?._id);
+                socket.emit("userConnected", {
+                    username: data?.username,
+                    email: data?.email,
+                    _id: data?._id
+                });
                 console.log(data)
                 navigate('/chat');
             })
