@@ -1,38 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState([]);
   const [isError, setIsError] = useState(null);
+  const userId = localStorage.getItem("userId");
+  const { id } = useParams();
 
   const searchUser = async (e) => {
     e.preventDefault();
-  
+
     const searchQuery = isSearch.trim();
-  
+
     if (searchQuery.length === 0) {
       setIsResult([]);
       return;
     }
-  
+
     try {
-      const response = await axios.get(`http://localhost:8000/user/search-user?query=${searchQuery}`);
-      const data = response.data;
-  
-      setIsResult(data.length > 0 ? data : []);
+      await axios
+        .get(
+          `http://localhost:8000/user/search-user?query=${searchQuery}&userId=${userId}`
+        )
+        .then((res) => {
+          const data = res.data;
+          setIsResult(data.length > 0 ? data : []);
+        });
     } catch (error) {
       const data = error?.response?.data?.message;
       setIsError(data);
     }
   };
-  
 
-  const handleSelectConversation = (conversation) => {
-    setSelectedConversation((prevSelected) => [...prevSelected, conversation]);
-  };
+  useEffect(() => {
+    const getActiveConversation = async () => {
+      await axios
+        .get("http://localhost:8000/user/user-conversation", {
+          conversationId: id,
+        })
+        .then((res) => {
+          const data = res.data;
+          setSelectedConversation(data);
+        });
+    };
+
+    getActiveConversation();
+  }, []);
 
   return (
     <div className="flex px-5 dark:bg-gray-800 transition duration-3s rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
@@ -55,7 +71,7 @@ export const ChatSideBar = () => {
         </div>
         <div className="ml-2 font-bold dark:text-white text-2xl">QuickChat</div>
       </div>
-      
+
       <label htmlFor="simple-search" className="sr-only">
         Search
       </label>
@@ -96,7 +112,6 @@ export const ChatSideBar = () => {
               >
                 <Link
                   to={`/chat/${item._id}`}
-                  onClick={() => handleSelectConversation(item)}
                   className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
                 >
                   <div className="relative">
@@ -117,7 +132,7 @@ export const ChatSideBar = () => {
             ))}
         </div>
       )}
-      {console.log(isResult?.length)}
+
       {isSearch?.length > 0 && isError && (
         <div className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
           <p className="pl-3 text-dark dark:text-white">{isError}</p>
@@ -131,24 +146,26 @@ export const ChatSideBar = () => {
             {selectedConversation?.length}
           </span>
         </div>
-        {selectedConversation && selectedConversation.length > 0 && (
-          <div>
-            {selectedConversation.map((conversation, index) => (
-              <Link to={`/chat/${conversation._id}`} key={index}>
-                <div className="flex flex-col space-y-1 mt-4 -mx-2">
-                  <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                      {conversation.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="ml-2 text-sm font-semibold dark:text-white">
-                      {conversation.name}
-                    </div>
-                  </button>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+        <div>
+          {id &&
+            selectedConversation?.map((item, index) => {
+              console.log(item, "conversation");
+              return (
+                <Link to={`/chat/${item._id}`} key={index}>
+                  <div className="flex flex-col space-y-1 mt-4 -mx-2">
+                    <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                        {item?.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="ml-2 text-sm font-semibold dark:text-white">
+                        {item?.name}
+                      </div>
+                    </button>
+                  </div>
+                </Link>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

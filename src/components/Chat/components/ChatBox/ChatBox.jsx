@@ -52,12 +52,17 @@ export const ChatBox = () => {
 
   useEffect(() => {
     if (id) {
+
       const getConversation = async () => {
         await axios
           .get(`http://localhost:8000/chat/get-conversation?query=${id}`)
           .then((res) => {
             const data = res.data;
             setSelectedConversation(data);
+          })
+          .catch((res) => {
+            const error = res?.response?.data?.message;
+            console.log(error)
           });
       };
 
@@ -124,7 +129,7 @@ export const ChatBox = () => {
                         ? item?.message[0]?.sender?._id
                         : item?.message[0]?.sender;
                       const isCurrentUser = userId === senderId;
-
+                      const formattedTime = new Date(message?.timestamps).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                       return (
                         <div
                           key={index}
@@ -159,7 +164,7 @@ export const ChatBox = () => {
                                 {message?.content}
                               </div>
                               <p className="px-1 mt-1 text-dark dark:text-white text-xs">
-                                17:55
+                                {formattedTime}
                                 {!message?.seen && (
                                   <CheckIcon
                                     style={{
