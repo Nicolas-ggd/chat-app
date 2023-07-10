@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import { socket } from "../../../../api/socket";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
@@ -33,9 +34,20 @@ export const ChatBox = () => {
         })
         .then((res) => {
           const data = res.data;
-          socket.emit("private-message", data);
+          messageMarkAsRead(data?.message[0]._id);
         });
     }
+  };
+
+  const messageMarkAsRead = async (messageId) => {
+    await axios
+      .post("http://localhost:8000/chat/mark-as-read", {
+        messageId: messageId,
+      })
+      .then((res) => {
+        const data = res.data;
+        socket.emit("private-message", data);
+      });
   };
 
   useEffect(() => {
@@ -146,8 +158,24 @@ export const ChatBox = () => {
                               <div className={`dark:text-white`}>
                                 {message?.content}
                               </div>
-                              <p className="px-1 mt-1 text-dark dark:text-white text-xs">17:55
-                              <CheckIcon style={{ fontSize: "15px", marginLeft: "5px" }} />
+                              <p className="px-1 mt-1 text-dark dark:text-white text-xs">
+                                17:55
+                                {!message?.seen && (
+                                  <CheckIcon
+                                    style={{
+                                      fontSize: "15px",
+                                      marginLeft: "5px",
+                                    }}
+                                  />
+                                )}
+                                {message?.seen && (
+                                  <DoneAllIcon
+                                    style={{
+                                      fontSize: "15px",
+                                      marginLeft: "5px",
+                                    }}
+                                  />
+                                )}
                               </p>
                             </div>
                           </div>
