@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -12,6 +12,15 @@ export const ChatBox = () => {
   const [isRecipient, setIsRecipient] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectedConversation]);
+
+  const scrollToBottom = () => {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  };
 
   const inputTypedValue = (event) => {
     setIsMessage(event.target.value);
@@ -29,11 +38,13 @@ export const ChatBox = () => {
               sender: userId,
               recipient: id,
               content: isMessage,
+              readBy: userId,
             },
           },
         })
         .then((res) => {
           const data = res.data;
+          scrollToBottom();
           messageMarkAsRead(data?.message[0]._id);
         });
     }
@@ -120,7 +131,10 @@ export const ChatBox = () => {
                 </div>
               </>
             )}
-            <div className="flex flex-col h-full overflow-x-auto mb-4">
+            <div
+              className="flex flex-col h-full overflow-x-auto mb-4"
+              ref={containerRef}
+            >
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {selectedConversation &&
@@ -171,7 +185,7 @@ export const ChatBox = () => {
                               </div>
                               <p className="px-1 mt-1 text-dark dark:text-white text-xs">
                                 {formattedTime}
-                                {!message?.seen && (
+                                {message?.readBy !== userId && (
                                   <CheckIcon
                                     style={{
                                       fontSize: "15px",
@@ -179,7 +193,7 @@ export const ChatBox = () => {
                                     }}
                                   />
                                 )}
-                                {message?.seen && (
+                                {message?.readBy === userId && (
                                   <DoneAllIcon
                                     style={{
                                       fontSize: "15px",

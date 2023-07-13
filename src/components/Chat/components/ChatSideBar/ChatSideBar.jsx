@@ -119,7 +119,7 @@ export const ChatSideBar = () => {
                   >
                     <div className="relative">
                       <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                        H
+                        {item?.name?.charAt(0)?.toUpperCase()}
                       </div>
                       {item?.online && (
                         <div className="absolute top-0 right-0">
