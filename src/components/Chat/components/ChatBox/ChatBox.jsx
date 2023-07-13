@@ -13,8 +13,8 @@ export const ChatBox = () => {
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
 
-  const inputTypedValue = (e) => {
-    setIsMessage(e.target.value);
+  const inputTypedValue = (event) => {
+    setIsMessage(event.target.value);
   };
 
   const sendMessage = async (e) => {
@@ -37,6 +37,8 @@ export const ChatBox = () => {
           messageMarkAsRead(data?.message[0]._id);
         });
     }
+
+    setIsMessage("");
   };
 
   const messageMarkAsRead = async (messageId) => {
@@ -220,7 +222,8 @@ export const ChatBox = () => {
                       placeholder="Type message..."
                       type="text"
                       className="flex w-full dark:text-white dark:bg-gray-700 dark:border-gray-500 border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-                      onChange={(e) => inputTypedValue(e)}
+                      onChange={inputTypedValue}
+                      value={isMessage}
                     />
                     <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
                       <svg
