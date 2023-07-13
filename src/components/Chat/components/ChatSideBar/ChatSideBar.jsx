@@ -138,11 +138,8 @@ export const ChatSideBar = () => {
       )}
 
       <div className="flex flex-col mt-2">
-        <div className="flex flex-row items-center justify-between text-xs mt-6">
+        <div className="flex flex-row items-center justify-between text-xs mt-3">
           <span className="font-bold dark:text-white">Conversations</span>
-          <span className="flex items-center font-bold justify-center bg-gray-300 h-4 w-4 rounded-full">
-            {selectedConversation?.length}
-          </span>
         </div>
         <div>
           {id &&
