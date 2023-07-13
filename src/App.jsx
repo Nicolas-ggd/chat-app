@@ -16,7 +16,6 @@ function App() {
         <Route element={<PrivateRoutes />}>
           <Route exact path="/chat" element={<Chat />} />
           <Route exact path="/chat/:id" element={<Chat />} />
-
         </Route>
         <Route exact path="/" element={<Landing />} />
         <Route exact path="/signin" element={<Auth />} />

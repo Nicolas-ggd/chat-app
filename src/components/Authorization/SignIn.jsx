@@ -42,7 +42,6 @@ export const SignIn = ({ closeSignIn }) => {
                     email: data?.email,
                     _id: data?._id
                 });
-                console.log(data)
                 navigate('/chat');
             })
             .catch((res) => {

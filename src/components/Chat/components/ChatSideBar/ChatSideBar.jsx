@@ -41,6 +41,10 @@ export const ChatSideBar = () => {
         .then((res) => {
           const data = res.data;
           setSelectedConversation([data]);
+        })
+        .catch((res) => {
+          const data = res?.response?.data?.message;
+          console.log(data);
         });
     };
 
@@ -103,7 +107,7 @@ export const ChatSideBar = () => {
         <div>
           {isResult &&
             isResult.map((item, index) => {
-              console.log(item)
+              console.log(item);
               return (
                 <div
                   key={index}

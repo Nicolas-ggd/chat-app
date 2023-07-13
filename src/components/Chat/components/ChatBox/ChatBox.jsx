@@ -52,7 +52,6 @@ export const ChatBox = () => {
 
   useEffect(() => {
     if (id) {
-
       const getConversation = async () => {
         await axios
           .get(`http://localhost:8000/chat/get-conversation?query=${id}`)
@@ -62,7 +61,7 @@ export const ChatBox = () => {
           })
           .catch((res) => {
             const error = res?.response?.data?.message;
-            console.log(error)
+            console.log(error);
           });
       };
 
@@ -92,7 +91,6 @@ export const ChatBox = () => {
     };
 
     getOneUser();
-
   }, []);
 
   return (
@@ -130,7 +128,12 @@ export const ChatBox = () => {
                         ? item?.message[0]?.sender?._id
                         : item?.message[0]?.sender;
                       const isCurrentUser = userId === senderId;
-                      const formattedTime = new Date(message?.timestamps).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                      const formattedTime = new Date(
+                        message?.timestamps
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      });
                       return (
                         <div
                           key={index}
