@@ -93,9 +93,6 @@ export const ChatBox = () => {
 
     getOneUser();
 
-    socket.on("connectedUsers", (data) => {
-      console.log(data, 'connectedUsers')
-    });
   }, []);
 
   return (

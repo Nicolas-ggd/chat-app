@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState([]);
-  const [isError, setIsError] = useState(null);
   const userId = localStorage.getItem("userId");
   const { id } = useParams();
 
@@ -31,24 +30,22 @@ export const ChatSideBar = () => {
         });
     } catch (error) {
       const data = error?.response?.data?.message;
-      setIsError(data);
+      console.log(data);
     }
   };
 
   useEffect(() => {
     const getActiveConversation = async () => {
       await axios
-        .get("http://localhost:8000/user/user-conversation", {
-          conversationId: id,
-        })
+        .get(`http://localhost:8000/user/user-conversation?_id=${id}`)
         .then((res) => {
           const data = res.data;
-          setSelectedConversation(data);
+          setSelectedConversation([data]);
         });
     };
 
     getActiveConversation();
-  }, []);
+  }, [id]);
 
   return (
     <div className="flex px-5 dark:bg-gray-800 transition duration-3s rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
@@ -105,37 +102,34 @@ export const ChatSideBar = () => {
       {isSearch.length > 0 && (
         <div>
           {isResult &&
-            isResult.map((item, index) => (
-              <div
-                key={index}
-                className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
-              >
-                <Link
-                  to={`/chat/${item._id}`}
-                  className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
+            isResult.map((item, index) => {
+              console.log(item)
+              return (
+                <div
+                  key={index}
+                  className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
                 >
-                  <div className="relative">
-                    <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                      H
-                    </div>
-                    {item?.online && (
-                      <div className="absolute top-0 right-0">
-                        <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                  <Link
+                    to={`/chat/${item._id}`}
+                    className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
+                  >
+                    <div className="relative">
+                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                        H
                       </div>
-                    )}
-                  </div>
-                  <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
-                    {item?.name}
-                  </div>
-                </Link>
-              </div>
-            ))}
-        </div>
-      )}
-
-      {isSearch?.length > 0 && isError && (
-        <div className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto">
-          <p className="pl-3 text-dark dark:text-white">{isError}</p>
+                      {item?.online && (
+                        <div className="absolute top-0 right-0">
+                          <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
+                      {item?.name}
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
         </div>
       )}
 
