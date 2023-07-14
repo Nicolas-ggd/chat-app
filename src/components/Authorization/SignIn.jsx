@@ -37,11 +37,11 @@ export const SignIn = ({ closeSignIn }) => {
                 const data = res.data;
                 localStorage.setItem('access_token', data?.access_token);
                 localStorage.setItem('userId', data?._id);
-                socket.emit("userConnected", {
-                    username: data?.username,
-                    email: data?.email,
-                    _id: data?._id
-                });
+                // socket.emit("userConnected", {
+                //     name: data?.name,
+                //     email: data?.email,
+                //     _id: data?._id
+                // });
                 navigate('/chat');
             })
             .catch((res) => {

@@ -107,7 +107,6 @@ export const ChatSideBar = () => {
         <div>
           {isResult &&
             isResult.map((item, index) => {
-              console.log(item);
               return (
                 <div
                   key={index}
@@ -144,7 +143,6 @@ export const ChatSideBar = () => {
         <div>
           {id &&
             selectedConversation?.map((item, index) => {
-              console.log(item, "conversation");
               return (
                 <Link to={`/chat/${item._id}`} key={index}>
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">

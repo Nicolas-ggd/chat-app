@@ -6,10 +6,10 @@ import { socket } from "../../../../api/socket";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
-export const ChatBox = () => {
+export const ChatBox = ({ connectedUsers }) => {
   const [isMessage, setIsMessage] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [isRecipient, setIsRecipient] = useState(null);
+  // const [isRecipient, setIsRecipient] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
   const containerRef = useRef(null);
@@ -19,7 +19,9 @@ export const ChatBox = () => {
   }, [selectedConversation]);
 
   const scrollToBottom = () => {
-    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   };
 
   const inputTypedValue = (event) => {
@@ -84,7 +86,6 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
-      console.log(data);
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 
@@ -93,40 +94,40 @@ export const ChatBox = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const getOneUser = async () => {
-      await axios
-        .get(`http://localhost:8000/user/get-user?query=${userId}`)
-        .then((res) => {
-          const data = res.data;
-          setIsRecipient(data);
-        });
-    };
+  // useEffect(() => {
+  //   const getOneUser = async () => {
+  //     await axios
+  //       .get(`http://localhost:8000/user/get-user?query=${userId}`)
+  //       .then((res) => {
+  //         const data = res.data;
+  //         // setIsRecipient(data);
+  //       });
+  //   };
 
-    getOneUser();
-  }, []);
+  //   getOneUser();
+  // }, []);
 
   return (
     <>
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
           <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
-            {isRecipient && (
+            {connectedUsers && (
               <>
                 <div className="flex items-center">
                   <div className="relative">
                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                      {isRecipient &&
-                        isRecipient?.name?.charAt(0)?.toUpperCase()}
+                      {connectedUsers &&
+                        connectedUsers[0]?.name?.charAt(0)?.toUpperCase()}
                     </div>
-                    {isRecipient?.online && (
+                    {connectedUsers[0]?.online && (
                       <div className="absolute top-0 right-0">
                         <div className="h-2 w-2 bg-green-500 rounded-full"></div>
                       </div>
                     )}
                   </div>
                   <div className="text-dark dark:bg-red dark:text-white p-4">
-                    {isRecipient?.name}
+                    {connectedUsers[0]?.name}
                   </div>
                 </div>
               </>
@@ -185,7 +186,7 @@ export const ChatBox = () => {
                               </div>
                               <p className="px-1 mt-1 text-dark dark:text-white text-xs">
                                 {formattedTime}
-                                {message?.readBy !== userId && (
+                                {message[0]?.readBy === userId && (
                                   <CheckIcon
                                     style={{
                                       fontSize: "15px",
@@ -193,7 +194,7 @@ export const ChatBox = () => {
                                     }}
                                   />
                                 )}
-                                {message?.readBy === userId && (
+                                {message[0]?.readBy !== userId && (
                                   <DoneAllIcon
                                     style={{
                                       fontSize: "15px",
