@@ -6,10 +6,10 @@ import { socket } from "../../../../api/socket";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
-export const ChatBox = ({ connectedUsers }) => {
+export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
-  // const [isRecipient, setIsRecipient] = useState(null);
+  const [isRecipient, setIsRecipient] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
   const containerRef = useRef(null);
@@ -94,40 +94,50 @@ export const ChatBox = ({ connectedUsers }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const getOneUser = async () => {
-  //     await axios
-  //       .get(`http://localhost:8000/user/get-user?query=${userId}`)
-  //       .then((res) => {
-  //         const data = res.data;
-  //         // setIsRecipient(data);
-  //       });
-  //   };
+  useEffect(() => {
+    const getOneUser = async () => {
+      await axios
+        .get(`http://localhost:8000/user/get-user?query=${userId}`)
+        .then((res) => {
+          const data = res.data;
+          socket.emit("userConnected", data);
+        });
+    };
 
-  //   getOneUser();
-  // }, []);
+    getOneUser();
+
+    socket.on("connectedUsers", (data) => {
+      console.log(data, "connectedUsers");
+      const user = data?.filter((uId) => uId?._id === id)
+      setIsRecipient(data);
+    });
+
+    return () => {
+      socket.off("connectedUsers");
+    };
+  }, []);
 
   return (
     <>
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
           <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
-            {connectedUsers && (
+            {isRecipient && (
               <>
                 <div className="flex items-center">
                   <div className="relative">
                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                      {connectedUsers &&
-                        connectedUsers[0]?.name?.charAt(0)?.toUpperCase()}
+                      {isRecipient &&
+                        isRecipient[0]?.name?.charAt(0)?.toUpperCase()}
                     </div>
-                    {connectedUsers[0]?.online && (
+                    {isRecipient[0]?.online && (
                       <div className="absolute top-0 right-0">
                         <div className="h-2 w-2 bg-green-500 rounded-full"></div>
                       </div>
                     )}
                   </div>
                   <div className="text-dark dark:bg-red dark:text-white p-4">
-                    {connectedUsers[0]?.name}
+                    {isRecipient[0]?.name}
                   </div>
                 </div>
               </>

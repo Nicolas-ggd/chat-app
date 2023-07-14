@@ -55,7 +55,7 @@ export const Chat = () => {
     >
       <div className="flex flex-row h-full w-full overflow-x-hidden">
         <ChatSideBar />
-        <ChatBox connectedUsers={connectedUsers} />
+        <ChatBox />
       </div>
     </div>
   );
