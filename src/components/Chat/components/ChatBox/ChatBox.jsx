@@ -94,54 +94,11 @@ export const ChatBox = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const getOneUser = async () => {
-      await axios
-        .get(`http://localhost:8000/user/get-user?query=${userId}`)
-        .then((res) => {
-          const data = res.data;
-          socket.emit("userConnected", data);
-        });
-    };
-
-    getOneUser();
-
-    socket.on("connectedUsers", (data) => {
-      console.log(data, "connectedUsers");
-      const user = data?.filter((uId) => uId?._id === id)
-      setIsRecipient(data);
-    });
-
-    return () => {
-      socket.off("connectedUsers");
-    };
-  }, []);
-
   return (
     <>
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
           <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
-            {isRecipient && (
-              <>
-                <div className="flex items-center">
-                  <div className="relative">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                      {isRecipient &&
-                        isRecipient[0]?.name?.charAt(0)?.toUpperCase()}
-                    </div>
-                    {isRecipient[0]?.online && (
-                      <div className="absolute top-0 right-0">
-                        <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-dark dark:bg-red dark:text-white p-4">
-                    {isRecipient[0]?.name}
-                  </div>
-                </div>
-              </>
-            )}
             <div
               className="flex flex-col h-full overflow-x-auto mb-4"
               ref={containerRef}
