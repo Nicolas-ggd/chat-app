@@ -19,6 +19,13 @@ export const Header = () => {
       });
   };
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <header className="bg-white dark:bg-gray-900 transition duration-3s">
       <nav
@@ -69,7 +76,7 @@ export const Header = () => {
           </div>
 
           <Link
-            to="/"
+            onClick={scrollToBottom}
             className="text-sm dark:text-white font-semibold leading-6 text-gray-900"
           >
             Features
