@@ -9,7 +9,6 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const [isRecipient, setIsRecipient] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
   const containerRef = useRef(null);
@@ -153,7 +152,8 @@ export const ChatBox = () => {
                               </div>
                               <p className="px-1 mt-1 text-dark dark:text-white text-xs">
                                 {formattedTime}
-                                {message[0]?.readBy === userId && (
+
+                                {!message[0]?.seen && (
                                   <CheckIcon
                                     style={{
                                       fontSize: "15px",
@@ -161,7 +161,8 @@ export const ChatBox = () => {
                                     }}
                                   />
                                 )}
-                                {message[0]?.readBy !== userId && (
+
+                                {message[0]?.seen &&  (
                                   <DoneAllIcon
                                     style={{
                                       fontSize: "15px",
@@ -169,6 +170,7 @@ export const ChatBox = () => {
                                     }}
                                   />
                                 )}
+                                
                               </p>
                             </div>
                           </div>

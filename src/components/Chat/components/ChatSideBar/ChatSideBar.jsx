@@ -138,7 +138,7 @@ export const ChatSideBar = () => {
 
       <div className="flex flex-col mt-2">
         <div className="flex flex-row items-center justify-between text-xs mt-3">
-          <span className="font-bold dark:text-white">Conversations</span>
+          <h3 className="font-bold text-base dark:text-white">Messages</h3>
         </div>
         <div>
           {id &&
@@ -146,11 +146,11 @@ export const ChatSideBar = () => {
               return (
                 <Link to={`/chat/${item._id}`} key={index}>
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">
-                    <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
-                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                    <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-4 px-2">
+                      <div className="flex items-center justify-center h-10 w-10 bg-indigo-200 rounded-full">
                         {item?.name.charAt(0).toUpperCase()}
                       </div>
-                      <div className="ml-2 text-sm font-semibold dark:text-white">
+                      <div className="ml-2 mb-4 text-base font-sans dark:text-white">
                         {item?.name}
                       </div>
                     </button>
