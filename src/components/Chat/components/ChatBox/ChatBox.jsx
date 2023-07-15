@@ -9,6 +9,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [reciptionUser, setReciptionUser] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
   const containerRef = useRef(null);
@@ -79,7 +80,17 @@ export const ChatBox = () => {
           });
       };
 
+      const getReciptionUser = async () => {
+        await axios
+          .get(`http://localhost:8000/user/get-user?query=${id}`)
+          .then((res) => {
+            const data = res?.data;
+            setReciptionUser([data]);
+          });
+      };
+
       getConversation();
+      getReciptionUser();
     }
   }, [id]);
 
@@ -98,6 +109,24 @@ export const ChatBox = () => {
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
           <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
+            <div className="flex py-3 border-b-slate-500">
+              {reciptionUser &&
+                reciptionUser?.map((item, index) => {
+                  return (
+                    <div className="flex items-center px-2">
+                      <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                        {item?.name?.charAt(0)?.toUpperCase()}
+                      </div>
+                      <h3
+                        key={index}
+                        className="text-sans text-base text-dark dark:text-white px-2"
+                      >
+                        {item?.name}
+                      </h3>
+                    </div>
+                  );
+                })}
+            </div>
             <div
               className="flex flex-col h-full overflow-x-auto mb-4"
               ref={containerRef}
@@ -162,7 +191,7 @@ export const ChatBox = () => {
                                   />
                                 )}
 
-                                {message[0]?.seen &&  (
+                                {message[0]?.seen && (
                                   <DoneAllIcon
                                     style={{
                                       fontSize: "15px",
@@ -170,7 +199,6 @@ export const ChatBox = () => {
                                     }}
                                   />
                                 )}
-                                
                               </p>
                             </div>
                           </div>
