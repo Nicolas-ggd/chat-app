@@ -5,6 +5,8 @@ import axios from "axios";
 import { socket } from "../../../../api/socket";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
@@ -48,11 +50,27 @@ export const ChatBox = () => {
           const data = res.data;
           socket.emit("private-message", data);
           scrollToBottom();
-          // messageMarkAsRead(data?.message[0]._id);
         });
     }
 
     setIsMessage("");
+  };
+
+  const sendLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Send the user's location as a message
+          const locationMessage = `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`;
+          setIsMessage(locationMessage);
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
   };
 
   useEffect(() => {
@@ -105,7 +123,7 @@ export const ChatBox = () => {
                   return (
                     <div className="flex items-center px-2" key={index}>
                       <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                        {item?.name?.charAt(0)?.toUpperCase()}
+                        <GitHubIcon />
                       </div>
                       <h3 className="text-sans text-base text-dark dark:text-white px-2">
                         {item?.name}
@@ -150,13 +168,7 @@ export const ChatBox = () => {
                             }`}
                           >
                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              {isCurrentUser
-                                ? message?.sender?.name
-                                    ?.charAt(0)
-                                    ?.toUpperCase()
-                                : message?.recipient?.name
-                                    ?.charAt(0)
-                                    ?.toUpperCase()}
+                              <GitHubIcon />
                             </div>
                             <div
                               className={`relative ${
@@ -224,21 +236,8 @@ export const ChatBox = () => {
                       onChange={inputTypedValue}
                       value={isMessage}
                     />
-                    <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                      </svg>
+                    <button onClick={sendLocation} className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                      <LocationOnIcon />
                     </button>
                   </div>
                 </form>

@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { socket } from "../../../../api/socket";
 
+import GitHubIcon from '@mui/icons-material/GitHub';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
@@ -60,20 +63,7 @@ export const ChatSideBar = () => {
     <div className="flex px-5 dark:bg-gray-800 transition duration-3s rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
       <div className="flex flex-row items-center justify-center h-12 w-full">
         <div className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-            ></path>
-          </svg>
+          <ElectricBoltIcon />
         </div>
         <div className="ml-2 font-bold dark:text-white text-2xl">QuickChat</div>
       </div>
@@ -124,7 +114,7 @@ export const ChatSideBar = () => {
                   >
                     <div className="relative">
                       <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
-                        {item?.name?.charAt(0)?.toUpperCase()}
+                        <GitHubIcon />
                       </div>
                       {item?.online && (
                         <div className="absolute top-0 right-0">
@@ -153,10 +143,10 @@ export const ChatSideBar = () => {
                 <Link onClick={readMessage} to={`/chat/${item._id}`} key={index}>
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">
                     <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-4 px-2">
-                      <div className="flex items-center justify-center h-10 w-10 bg-indigo-200 rounded-full">
-                        {item?.name.charAt(0).toUpperCase()}
+                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                        <GitHubIcon />
                       </div>
-                      <div className="ml-2 mb-4 text-base font-sans dark:text-white">
+                      <div className="ml-2 text-sm font-sans dark:text-white">
                         {item?.name}
                       </div>
                     </button>
