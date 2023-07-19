@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { socket } from "../../../../api/socket";
 
-import GitHubIcon from '@mui/icons-material/GitHub';
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import GitHubIcon from "@mui/icons-material/GitHub";
+import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
@@ -116,11 +116,6 @@ export const ChatSideBar = () => {
                       <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                         <GitHubIcon />
                       </div>
-                      {item?.online && (
-                        <div className="absolute top-0 right-0">
-                          <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                        </div>
-                      )}
                     </div>
                     <div className="flex items-center ml-2 text-sm dark:text-white text-dark dark:hover:text-dark focus:text-dark font-semibold">
                       {item?.name}
@@ -140,7 +135,11 @@ export const ChatSideBar = () => {
           {id &&
             selectedConversation?.map((item, index) => {
               return (
-                <Link onClick={readMessage} to={`/chat/${item._id}`} key={index}>
+                <Link
+                  onClick={readMessage}
+                  to={`/chat/${item._id}`}
+                  key={index}
+                >
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">
                     <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-4 px-2">
                       <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
