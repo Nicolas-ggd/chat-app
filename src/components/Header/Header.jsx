@@ -25,13 +25,6 @@ export const Header = () => {
       });
   };
 
-  const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
-  };
-
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location]);
@@ -83,19 +76,20 @@ export const Header = () => {
           id="mobile-menu-2"
         >
           <ul className="lg:flex p-5 flex-col mt-12 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-            <li>
-              <a
-                onClick={scrollToBottom}
-                className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
-              >
-                Features
-              </a>
-            </li>
+            {!userId && (
+              <li>
+                <Link
+                  to="/"
+                  className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
+                >
+                  Chat
+                </Link>
+              </li>
+            )}
             {userId && (
               <li>
                 <Link
                   to="/chat"
-                  onClick={scrollToBottom}
                   className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
                 >
                   Chat
