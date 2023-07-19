@@ -1,11 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Switcher } from "../../utils/Switcher";
 import axios from "axios";
 
-import { Switcher } from "../../utils/Switcher";
-
 export const Header = () => {
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const userId = localStorage.getItem("userId");
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const userLogOut = async () => {
     await axios
@@ -26,90 +32,70 @@ export const Header = () => {
     });
   };
 
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
+
   return (
-    <header className="bg-white dark:bg-gray-900 transition duration-3s">
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
-        aria-label="Global"
-      >
-        <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
-            />
-          </a>
-        </div>
-        <div className="flex lg:hidden">
+    <div className="bg-white border-gray-200 px-4 transition duration-300 lg:px-6 dark:bg-gray-800">
+      <div className="flex lg:justify-between items-center mx-auto max-w-screen-xl">
+        <div className="flex justify-start items-center lg:order-2 py-5">
           <button
+            onClick={handleMobileMenuToggle}
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="mobile-menu-2"
+            aria-expanded={isMobileMenuOpen ? "true" : "false"}
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
+              className={`${isMobileMenuOpen ? "w-6 h-6" : "hidden"} z-50 absolute right-5 animate duration-300`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                fillRule="evenodd"
+                d="M10 11.414l4.293 4.293a1 1 0 001.414-1.414L11.414 10l4.293-4.293a1 1 0 00-1.414-1.414L10 8.586 5.707 4.293a1 1 0 00-1.414 1.414L8.586 10 4.293 14.293a1 1 0 001.414 1.414L10 11.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <svg
+              className={!isMobileMenuOpen ? "w-6 h-6" : "hidden"}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clipRule="evenodd"
               />
             </svg>
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          <div className="relative">
-            <a
-              href="#"
-              className="flex dark:text-white items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900"
-              aria-expanded="false"
-            >
-              Product
-            </a>
-          </div>
-
-          <Link
-            onClick={scrollToBottom}
-            className="text-sm dark:text-white font-semibold leading-6 text-gray-900"
-          >
-            Features
-          </Link>
-          <a
-            href="#"
-            className="text-sm dark:text-white font-semibold leading-6 text-gray-900"
-          >
-            Marketplace
-          </a>
+        <div
+          className={`${
+            isMobileMenuOpen ? "fixed inset-0 z-999" : "hidden"
+          } justify-between bg-white dark:bg-gray-800 transition duration-300 items-center w-full lg:flex lg:w-auto lg:order-1`}
+          id="mobile-menu-2"
+        >
+          <ul className="lg:flex p-5 flex-col mt-12 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+            <li>
+              <a
+                onClick={scrollToBottom}
+                className="block py-5 pr-4 pl-3 cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                Features
+              </a>
+            </li>
+          </ul>
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {!userId && (
-            <Link
-              to="/signin"
-              className="text-sm dark:text-white font-semibold leading-6 text-gray-900"
-            >
-              Sign In <span aria-hidden="true">&rarr;</span>
-            </Link>
-          )}
-          {userId && (
-            <div
-              onClick={userLogOut}
-              className="text-sm dark:text-white font-semibold leading-6 text-gray-900 cursor-pointer"
-            >
-              Log Out
-            </div>
-          )}
-        </div>
-        <div className="px-5">
+        {!isMobileMenuOpen && <div className="flex w-full justify-end items-center lg:order-3">
+          <a className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4">LogOut</a>
           <Switcher />
-        </div>
-      </nav>
-    </header>
+        </div>}
+      </div>
+    </div>
   );
 };

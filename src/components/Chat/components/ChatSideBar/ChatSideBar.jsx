@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { socket } from "../../../../api/socket";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
@@ -32,6 +33,10 @@ export const ChatSideBar = () => {
       const data = error?.response?.data?.message;
       console.log(data);
     }
+  };
+
+  const readMessage = () => {
+    socket.emit("messageRead", userId);
   };
 
   useEffect(() => {
@@ -114,6 +119,7 @@ export const ChatSideBar = () => {
                 >
                   <Link
                     to={`/chat/${item._id}`}
+                    onClick={readMessage}
                     className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
                   >
                     <div className="relative">
@@ -144,7 +150,7 @@ export const ChatSideBar = () => {
           {id &&
             selectedConversation?.map((item, index) => {
               return (
-                <Link to={`/chat/${item._id}`} key={index}>
+                <Link onClick={readMessage} to={`/chat/${item._id}`} key={index}>
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">
                     <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-4 px-2">
                       <div className="flex items-center justify-center h-10 w-10 bg-indigo-200 rounded-full">

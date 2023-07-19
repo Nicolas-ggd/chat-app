@@ -46,23 +46,16 @@ export const ChatBox = () => {
         })
         .then((res) => {
           const data = res.data;
+          socket.emit("private-message", {
+            data,
+            userId,
+          });
           scrollToBottom();
           messageMarkAsRead(data?.message[0]._id);
         });
     }
 
     setIsMessage("");
-  };
-
-  const messageMarkAsRead = async (messageId) => {
-    await axios
-      .post("http://localhost:8000/chat/mark-as-read", {
-        messageId: messageId,
-      })
-      .then((res) => {
-        const data = res.data;
-        socket.emit("private-message", data);
-      });
   };
 
   useEffect(() => {
@@ -96,6 +89,7 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
+      console.log(data, "ragagebis");
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 
@@ -113,14 +107,11 @@ export const ChatBox = () => {
               {reciptionUser &&
                 reciptionUser?.map((item, index) => {
                   return (
-                    <div className="flex items-center px-2">
+                    <div className="flex items-center px-2" key={index}>
                       <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         {item?.name?.charAt(0)?.toUpperCase()}
                       </div>
-                      <h3
-                        key={index}
-                        className="text-sans text-base text-dark dark:text-white px-2"
-                      >
+                      <h3 className="text-sans text-base text-dark dark:text-white px-2">
                         {item?.name}
                       </h3>
                     </div>
