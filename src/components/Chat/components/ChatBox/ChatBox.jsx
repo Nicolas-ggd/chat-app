@@ -112,6 +112,17 @@ export const ChatBox = () => {
     };
   }, []);
 
+  useEffect(() => {
+    socket.on("userDisconnected", (data) => {
+      console.log(data)
+      // setSelectedConversation((prevData) => [...prevData, data]);
+    });
+
+    return () => {
+      socket.off("userDisconnected");
+    };
+  }, []);
+
   return (
     <>
       {id && (

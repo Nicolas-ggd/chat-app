@@ -49,7 +49,9 @@ export const Header = () => {
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className={`${isMobileMenuOpen ? "w-6 h-6" : "hidden"} z-50 absolute right-5 animate duration-300`}
+              className={`${
+                isMobileMenuOpen ? "w-6 h-6" : "hidden"
+              } z-50 absolute right-5 animate duration-300`}
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -89,12 +91,31 @@ export const Header = () => {
                 Features
               </a>
             </li>
+            {userId && (
+              <li>
+                <Link
+                  to="/chat"
+                  onClick={scrollToBottom}
+                  className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
+                >
+                  Chat
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
-        {!isMobileMenuOpen && <div className="flex w-full justify-end items-center lg:order-3">
-          <a onClick={userLogOut} className="cursor-pointer text-gray-700 border-gray-100 lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4">LogOut</a>
-          <Switcher />
-        </div>}
+        {!isMobileMenuOpen && (
+          <div className="flex w-full justify-end items-center lg:order-3">
+            <Link
+              to="/signin"
+              onClick={userLogOut}
+              className="cursor-pointer text-gray-700 border-gray-100 lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
+            >
+              {userId ? "Log Out" : "Sign In"}
+            </Link>
+            <Switcher />
+          </div>
+        )}
       </div>
     </div>
   );
