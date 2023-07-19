@@ -10,6 +10,7 @@ export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState([]);
+  const [allActiveUser, setAllActiveUser] = useState(null);
   const userId = localStorage.getItem("userId");
   const { id } = useParams();
 
@@ -43,6 +44,18 @@ export const ChatSideBar = () => {
   };
 
   useEffect(() => {
+    const getActiveUsers = async () => {
+      await axios.get(`http://localhost:8000/user/get-all-user?_id=${userId}`)
+      .then((res) => {
+        const data = res.data;
+        setAllActiveUser(data);
+      })
+    }
+
+    getActiveUsers();
+  }, [userId]);
+
+  useEffect(() => {
     const getActiveConversation = async () => {
       await axios
         .get(`http://localhost:8000/user/user-conversation?_id=${id}`)
@@ -60,7 +73,7 @@ export const ChatSideBar = () => {
   }, [id]);
 
   return (
-    <div className="flex px-5 dark:bg-gray-800 transition duration-3s rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
+    <div className="flex px-5 dark:bg-gray-800 transition duration-300 rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
       <div className="flex flex-row items-center justify-center h-12 w-full">
         <div className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
           <ElectricBoltIcon />
@@ -105,7 +118,7 @@ export const ChatSideBar = () => {
               return (
                 <div
                   key={index}
-                  className="flex animate transition duration-3s flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
+                  className="flex animate transition duration-300 flex-col space-y-1 mt-4 -mx-2 overflow-y-auto"
                 >
                   <Link
                     to={`/chat/${item._id}`}
@@ -129,11 +142,11 @@ export const ChatSideBar = () => {
 
       <div className="flex flex-col mt-2">
         <div className="flex flex-row items-center justify-between text-xs mt-3">
-          <h3 className="font-bold text-base dark:text-white">Messages</h3>
+          <h3 className="font-bold text-base dark:text-white">Active Users</h3>
         </div>
         <div>
-          {id &&
-            selectedConversation?.map((item, index) => {
+          {allActiveUser &&
+            allActiveUser?.map((item, index) => {
               return (
                 <Link
                   onClick={readMessage}
@@ -141,7 +154,7 @@ export const ChatSideBar = () => {
                   key={index}
                 >
                   <div className="flex flex-col space-y-1 mt-4 -mx-2">
-                    <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-4 px-2">
+                    <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-2 px-2">
                       <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                         <GitHubIcon />
                       </div>

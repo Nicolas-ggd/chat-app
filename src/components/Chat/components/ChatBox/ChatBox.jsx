@@ -116,7 +116,7 @@ export const ChatBox = () => {
     <>
       {id && (
         <div className="flex flex-col flex-auto h-full p-6">
-          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
+          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-300">
             <div className="flex py-3 border-b-slate-500">
               {reciptionUser &&
                 reciptionUser?.map((item, index) => {
@@ -248,7 +248,7 @@ export const ChatBox = () => {
       )}
       {!selectedConversation && !id && (
         <div className="flex flex-col flex-auto h-full p-6">
-          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-3s">
+          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4 dark:bg-gray-800 transition duration-300">
             <div className="flex flex-col h-full overflow-x-auto mb-4">
               <div className="flex flex-col h-full">
                 <div className="flex grid-cols-12 gap-y-2 justify-center items-center h-full">
