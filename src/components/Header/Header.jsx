@@ -37,7 +37,7 @@ export const Header = () => {
   }, [location]);
 
   return (
-    <div className="bg-white border-gray-200 px-4 transition duration-300 lg:px-6 dark:bg-gray-800">
+    <div className="bg-white border-gray-200 px-4 transition duration-300 py-2.5 lg:px-6 dark:bg-gray-900">
       <div className="flex lg:justify-between items-center mx-auto max-w-screen-xl">
         <div className="flex justify-start items-center lg:order-2 py-5">
           <button
@@ -77,14 +77,14 @@ export const Header = () => {
         <div
           className={`${
             isMobileMenuOpen ? "fixed inset-0 z-999" : "hidden"
-          } justify-between bg-white dark:bg-gray-800 transition duration-300 items-center w-full lg:flex lg:w-auto lg:order-1`}
+          } justify-between bg-white transition duration-300 dark:bg-gray-900 transition duration-300 items-center w-full lg:flex lg:w-auto lg:order-1`}
           id="mobile-menu-2"
         >
           <ul className="lg:flex p-5 flex-col mt-12 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
             <li>
               <a
                 onClick={scrollToBottom}
-                className="block py-5 pr-4 pl-3 cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4"
               >
                 Features
               </a>
@@ -92,7 +92,7 @@ export const Header = () => {
           </ul>
         </div>
         {!isMobileMenuOpen && <div className="flex w-full justify-end items-center lg:order-3">
-          <a className="cursor-pointer text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4">LogOut</a>
+          <a onClick={userLogOut} className="cursor-pointer text-gray-700 border-gray-100 lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 mx-4">LogOut</a>
           <Switcher />
         </div>}
       </div>

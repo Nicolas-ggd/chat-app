@@ -46,12 +46,9 @@ export const ChatBox = () => {
         })
         .then((res) => {
           const data = res.data;
-          socket.emit("private-message", {
-            data,
-            userId,
-          });
+          socket.emit("private-message", data);
           scrollToBottom();
-          messageMarkAsRead(data?.message[0]._id);
+          // messageMarkAsRead(data?.message[0]._id);
         });
     }
 
@@ -89,7 +86,6 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
-      console.log(data, "ragagebis");
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 

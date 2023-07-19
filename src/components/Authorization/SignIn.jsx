@@ -14,7 +14,7 @@ export const SignIn = ({ closeSignIn }) => {
         email: "",
         password: "",
     });
-    const [searchVerifyCode, setSearchVerifyCode] = useSearchParams();
+    const [searchVerifyCode] = useSearchParams();
     const searchParamsCode = searchVerifyCode.get("verifyCode")
 
 
@@ -35,6 +35,7 @@ export const SignIn = ({ closeSignIn }) => {
         })
             .then((res) => {
                 const data = res.data;
+                console.log(data)
                 localStorage.setItem('access_token', data?.access_token);
                 localStorage.setItem('userId', data?._id);
                 // socket.emit("userConnected", {
@@ -52,13 +53,9 @@ export const SignIn = ({ closeSignIn }) => {
     };
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900 transition duration-3s">
+        <div className="w-full h-screen bg-gray-50 dark:bg-gray-900 transition duration-300">
             {!isForgot && (
-                <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                        <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />
-                        Flowbite
-                    </a>
+                <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen sm:h-screen xs:h-screen md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8 dark:bg-gray-800 dark:rounded-md">
                             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-white">
@@ -135,6 +132,6 @@ export const SignIn = ({ closeSignIn }) => {
                 </div>
             )}
 
-        </section>
+        </div>
     );
 };
