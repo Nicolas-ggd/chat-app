@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import { socket } from "../../../../api/socket";
-import CheckIcon from "@mui/icons-material/Check";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import CookieIcon from '@mui/icons-material/Cookie';
@@ -44,7 +42,6 @@ export const ChatBox = () => {
               sender: userId,
               recipient: id,
               content: isMessage,
-              readBy: userId,
             },
           },
         })
@@ -188,24 +185,6 @@ export const ChatBox = () => {
                               </div>
                               <p className="px-1 mt-1 text-dark dark:text-white text-xs">
                                 {formattedTime}
-
-                                {!message[0]?.seen && (
-                                  <CheckIcon
-                                    style={{
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                    }}
-                                  />
-                                )}
-
-                                {message[0]?.seen && (
-                                  <DoneAllIcon
-                                    style={{
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                    }}
-                                  />
-                                )}
                               </p>
                             </div>
                           </div>

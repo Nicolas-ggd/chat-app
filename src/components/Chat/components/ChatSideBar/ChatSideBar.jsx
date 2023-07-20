@@ -5,12 +5,16 @@ import { socket } from "../../../../api/socket";
 
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+
+import { RoomModal } from "./RoomModal/RoomModal";
 
 export const ChatSideBar = () => {
   const [isSearch, setIsSearch] = useState("");
   const [isResult, setIsResult] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState([]);
   const [allActiveUser, setAllActiveUser] = useState(null);
+  const [isRoom, setIsRoom] = useState(false);
   const userId = localStorage.getItem("userId");
   const { id } = useParams();
 
@@ -40,18 +44,19 @@ export const ChatSideBar = () => {
   };
 
   const readMessage = () => {
-    const roomName = [id, userId].sort().join('-');
-    socket.emit('join-room', roomName)
+    const roomName = [id, userId].sort().join("-");
+    socket.emit("join-room", roomName);
   };
 
   useEffect(() => {
     const getActiveUsers = async () => {
-      await axios.get(`http://localhost:8000/user/get-all-user?_id=${userId}`)
-      .then((res) => {
-        const data = res.data;
-        setAllActiveUser(data);
-      })
-    }
+      await axios
+        .get(`http://localhost:8000/user/get-all-user?_id=${userId}`)
+        .then((res) => {
+          const data = res.data;
+          setAllActiveUser(data);
+        });
+    };
 
     getActiveUsers();
   }, [userId]);
@@ -72,6 +77,10 @@ export const ChatSideBar = () => {
 
     getActiveConversation();
   }, [id, selectedConversation]);
+
+  const toggleRoomModal = () => {
+    setIsRoom(prevData => !prevData);
+  };
 
   return (
     <div className="flex ml-2 px-5 dark:bg-gray-800 transition duration-300 rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
@@ -198,6 +207,28 @@ export const ChatSideBar = () => {
             })}
         </div>
       </div>
+
+      <div className="flex flex-col mt-2">
+        <div className="flex flex-row items-center justify-between text-xs mt-3">
+          <h3 className="font-bold text-base dark:text-white">Join Room</h3>
+        </div>
+        <div>
+          <Link onClick={readMessage}>
+            <div className="flex flex-col space-y-1 mt-4 -mx-2">
+              <button onClick={toggleRoomModal} className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-2 px-2">
+                <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                  <GroupAddIcon />
+                </div>
+                <div className="ml-2 text-sm font-sans dark:text-white">
+                  Join Room
+                </div>
+              </button>
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {isRoom && <RoomModal toggleRoomModal={toggleRoomModal} />}
     </div>
   );
 };
