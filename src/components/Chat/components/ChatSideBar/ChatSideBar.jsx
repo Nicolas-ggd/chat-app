@@ -40,7 +40,8 @@ export const ChatSideBar = () => {
   };
 
   const readMessage = () => {
-    socket.emit("messageRead", userId);
+    const roomName = [id, userId].sort().join('-');
+    socket.emit('join-room', roomName)
   };
 
   useEffect(() => {
@@ -70,10 +71,10 @@ export const ChatSideBar = () => {
     };
 
     getActiveConversation();
-  }, [id]);
+  }, [id, selectedConversation]);
 
   return (
-    <div className="flex px-5 dark:bg-gray-800 transition duration-300 rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
+    <div className="flex ml-2 px-5 dark:bg-gray-800 transition duration-300 rounded-2xl h-full flex-col py-5 w-64 bg-white flex-shrink-0">
       <div className="flex flex-row items-center justify-center h-12 w-full">
         <div className="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
           <ElectricBoltIcon />
@@ -122,7 +123,7 @@ export const ChatSideBar = () => {
                 >
                   <Link
                     to={`/chat/${item._id}`}
-                    onClick={readMessage}
+                    onClick={() => readMessage(item?._id)}
                     className="flex flex-row transition duration-1s items-center hover:bg-gray-100 rounded-xl p-2"
                   >
                     <div className="relative">
@@ -147,6 +148,35 @@ export const ChatSideBar = () => {
         <div>
           {allActiveUser &&
             allActiveUser?.map((item, index) => {
+              return (
+                <Link
+                  onClick={readMessage}
+                  to={`/chat/${item._id}`}
+                  key={index}
+                >
+                  <div className="flex flex-col space-y-1 mt-4 -mx-2">
+                    <button className="flex flex-row items-center hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl py-2 px-2">
+                      <div className="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+                        <GitHubIcon />
+                      </div>
+                      <div className="ml-2 text-sm font-sans dark:text-white">
+                        {item?.name}
+                      </div>
+                    </button>
+                  </div>
+                </Link>
+              );
+            })}
+        </div>
+      </div>
+
+      <div className="flex flex-col mt-2">
+        <div className="flex flex-row items-center justify-between text-xs mt-3">
+          <h3 className="font-bold text-base dark:text-white">Conversation</h3>
+        </div>
+        <div>
+          {selectedConversation &&
+            selectedConversation?.map((item, index) => {
               return (
                 <Link
                   onClick={readMessage}

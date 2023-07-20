@@ -5,12 +5,12 @@ import axios from "axios";
 import { socket } from "../../../../api/socket";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
-  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState([]);
   const [reciptionUser, setReciptionUser] = useState(null);
   const { id } = useParams();
   const userId = localStorage.getItem("userId");
@@ -34,6 +34,7 @@ export const ChatBox = () => {
     e.preventDefault();
 
     if (id) {
+      const roomName = [id, userId].sort().join("-");
       await axios
         .post("http://localhost:8000/chat/create-conversation", {
           data: {
@@ -48,7 +49,7 @@ export const ChatBox = () => {
         })
         .then((res) => {
           const data = res.data;
-          socket.emit("private-message", data);
+          socket.emit("private-message", { room: roomName, data });
           scrollToBottom();
         });
     }
@@ -60,16 +61,15 @@ export const ChatBox = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Send the user's location as a message
           const locationMessage = `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`;
           setIsMessage(locationMessage);
         },
         (error) => {
-          console.error('Error getting user location:', error);
+          console.error("Error getting user location:", error);
         }
       );
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      console.error("Geolocation is not supported by this browser.");
     }
   };
 
@@ -77,9 +77,15 @@ export const ChatBox = () => {
     if (id) {
       const getConversation = async () => {
         await axios
-          .get(`http://localhost:8000/chat/get-conversation?query=${id}`)
+          .get(`http://localhost:8000/chat/get-conversation`, {
+            params: {
+              userId: userId,
+              receiver: id
+            }
+          })
           .then((res) => {
             const data = res.data;
+            console.log(data)
             setSelectedConversation(data);
           })
           .catch((res) => {
@@ -104,6 +110,7 @@ export const ChatBox = () => {
 
   useEffect(() => {
     socket.on("private-message-received", (data) => {
+      console.log(data, "dd");
       setSelectedConversation((prevData) => [...prevData, data]);
     });
 
@@ -209,21 +216,11 @@ export const ChatBox = () => {
             </div>
             <div className="flex dark:bg-gray-700 flex-row items-center h-16 rounded-xl bg-white w-full px-4">
               <div>
-                <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                    ></path>
-                  </svg>
+                <button
+                  onClick={sendLocation}
+                  className="flex items-center justify-center text-gray-400 hover:text-gray-600"
+                >
+                  <LocationOnIcon />
                 </button>
               </div>
               <div className="flex-grow ml-4">
@@ -236,9 +233,6 @@ export const ChatBox = () => {
                       onChange={inputTypedValue}
                       value={isMessage}
                     />
-                    <button onClick={sendLocation} className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                      <LocationOnIcon />
-                    </button>
                   </div>
                 </form>
               </div>
