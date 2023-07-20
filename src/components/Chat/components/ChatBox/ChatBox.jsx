@@ -6,7 +6,8 @@ import { socket } from "../../../../api/socket";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
+import CookieIcon from '@mui/icons-material/Cookie';
 
 export const ChatBox = () => {
   const [isMessage, setIsMessage] = useState("");
@@ -175,7 +176,7 @@ export const ChatBox = () => {
                             }`}
                           >
                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              <GitHubIcon />
+                              {isCurrentUser ? <GitHubIcon /> : <CookieIcon />}
                             </div>
                             <div
                               className={`relative ${
@@ -220,8 +221,9 @@ export const ChatBox = () => {
                   onClick={sendLocation}
                   className="flex items-center justify-center text-gray-400 hover:text-gray-600"
                 >
-                  <LocationOnIcon />
+                  <PersonPinCircleIcon />
                 </button>
+
               </div>
               <div className="flex-grow ml-4">
                 <form onSubmit={sendMessage}>
